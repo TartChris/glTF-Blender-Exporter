@@ -342,24 +342,24 @@ def create_image_file(context, blender_image, dst_path, file_format):
     Creates JPEG or PNG file from a given Blender image.
     """
 
-    if file_format == blender_image.file_format:
-        # Copy source image to destination, keeping original format.
+    # if file_format == blender_image.file_format:
+    #     # Copy source image to destination, keeping original format.
+    #
+    #     src_path = bpy.path.abspath(blender_image.filepath, library=blender_image.library)
+    #
+    #     if dst_path != src_path:
+    #         copyfile(src_path, dst_path)
+    #
+    # else:
+    # Render a new image to destination, converting to target format.
 
-        src_path = bpy.path.abspath(blender_image.filepath, library=blender_image.library)
+    # TODO: Reusing the existing scene means settings like exposure are applied on export,
+    # which we don't want, but I'm not sure how to create a new Scene object through the
+    # Python API. See: https://github.com/KhronosGroup/glTF-Blender-Exporter/issues/184.
 
-        if dst_path != src_path:
-            copyfile(src_path, dst_path)
-
-    else:
-        # Render a new image to destination, converting to target format.
-
-        # TODO: Reusing the existing scene means settings like exposure are applied on export,
-        # which we don't want, but I'm not sure how to create a new Scene object through the
-        # Python API. See: https://github.com/KhronosGroup/glTF-Blender-Exporter/issues/184.
-
-        context.scene.render.image_settings.file_format = file_format
-        context.scene.render.image_settings.color_depth = '8'
-        blender_image.save_render(dst_path, context.scene)
+    context.scene.render.image_settings.file_format = file_format
+    context.scene.render.image_settings.color_depth = '8'
+    blender_image.save_render(dst_path, context.scene)
 
 
 def create_image_data(context, export_settings, blender_image, file_format):
